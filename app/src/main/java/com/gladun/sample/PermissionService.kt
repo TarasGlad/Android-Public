@@ -13,7 +13,7 @@ fun openGalleryForImage(
     fragment: Fragment,
     galleryPermissionLauncher: ActivityResultLauncher<String>,
     launcher: ActivityResultLauncher<Intent>,
-) = when {
+): Unit = when {
     isStoragePermissionsGranted(fragment) -> createGalleryIntent(launcher)
     fragment.shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) ->
         Toast.makeText(
@@ -33,7 +33,7 @@ private fun isStoragePermissionsGranted(fragment: Fragment) = ActivityCompat
         fragment.requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE
     ) == PackageManager.PERMISSION_GRANTED
 
-private fun requestStoragePermission(permissionLauncher: ActivityResultLauncher<String>) =
+private fun requestStoragePermission(permissionLauncher: ActivityResultLauncher<String>): Unit =
     permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
 
 fun openCameraForImage(
@@ -53,11 +53,11 @@ fun createCameraIntent(launcher: ActivityResultLauncher<Intent>) {
     Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { launcher.launch(it) }
 }
 
-private fun isCameraPermissionGranted(fragment: Fragment) = ActivityCompat
+private fun isCameraPermissionGranted(fragment: Fragment): Boolean = ActivityCompat
     .checkSelfPermission(
         fragment.requireContext(),
         Manifest.permission.CAMERA
     ) == PackageManager.PERMISSION_GRANTED
 
-private fun requestCameraPermission(permissionLauncher: ActivityResultLauncher<String>) =
+private fun requestCameraPermission(permissionLauncher: ActivityResultLauncher<String>): Unit =
     permissionLauncher.launch(Manifest.permission.CAMERA)
